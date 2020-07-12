@@ -19,30 +19,29 @@ containers = page_soup.findAll("div", {"class":"product-tile"})
 filename = "big_5_deals.csv"
 f = open(filename, "w")
 
-headers = "name_of_item, price\n"
+headers = "name_of_item, price, saving?\n"
 
 f.write(headers)
 
 
 for container in containers:
 
-    title_container = container.find("div", {"class":"product_name"})
     name_of_item = container.div.div.a.text
 
+    sale_price = container.find("div", {"class":"product-details-container-bottom"}).div.div.text
 
-    node = container.find("div", {"class":"regular-price"})
-    if node is not None:
-        original_price = container.find("div", {"class":"regular-price"}).text
-        print(original_price)
+    price_container = container.find("div", {"class":"product-details-container-bottom"})
+    if price_container.find("div", {"class":"savings"}) is not None:
+        saving_ = print("YES")
+        a_string = "YES" if saving_ is None else saving_
+        print(a_string)
+
     else:
-        sale_price = container.find("div", {"class":"sale-price"}).text
-        print(sale_price)
-
-        price = sale_price
-
+        saving_ = print("NO")
+        a_string = "NO" if saving_ is None else saving_
+        print(a_string)
 
 
-        f.write(name_of_item.replace(",", "|") + "," + price + "\n")
-
+    f.write(name_of_item + "," + sale_price + "," + a_string + "\n")
 
 f.close()
